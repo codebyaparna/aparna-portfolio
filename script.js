@@ -1,78 +1,44 @@
-// TYPING EFFECT
-const words = [
-  "Aspiring Data Scientist",
-  "Python Learner",
-  "DSA Explorer",
-  "Creative Problem Solver"
-];
+window.onload = () => {
+  document.getElementById("loader").style.display = "none";
+};
 
-let i = 0, j = 0, deleting = false;
+const words = ["Python Learner","Data Science Enthusiast","DSA Explorer"];
+let i=0,j=0,del=false;
 
-function type() {
-  const current = words[i];
-  document.getElementById("text").innerText = current.substring(0, j);
+function type(){
+  let t=words[i];
+  document.getElementById("text").innerText=t.substring(0,j);
 
-  if (!deleting) {
+  if(!del){
     j++;
-    if (j > current.length) {
-      deleting = true;
-      setTimeout(type, 1000);
-      return;
-    }
-  } else {
+    if(j>t.length){del=true;setTimeout(type,1000);return;}
+  }else{
     j--;
-    if (j === 0) {
-      deleting = false;
-      i = (i + 1) % words.length;
-    }
+    if(j==0){del=false;i=(i+1)%words.length;}
   }
 
-  setTimeout(type, deleting ? 50 : 100);
+  setTimeout(type,del?50:100);
 }
 type();
 
+// Cursor glow
+const cursor = document.createElement("div");
+cursor.classList.add("cursor");
+document.body.appendChild(cursor);
 
-// FLOATING CODE STRINGS
-const bg = document.querySelector(".bg");
+document.addEventListener("mousemove",(e)=>{
+  cursor.style.left=e.clientX+"px";
+  cursor.style.top=e.clientY+"px";
+});
 
-const codes = [
-  "import pandas as pd",
-  "import numpy as np",
-  "df.head()",
-  "model.fit(X,y)",
-  "accuracy = 95%",
-  "for i in range():",
-  "def predict():",
-  "return result"
-];
+// Floating bg
+const bg=document.querySelector(".bg");
+const code=["import pandas","df.head()","model.fit()","return x"];
 
-function createCode() {
-  const span = document.createElement("span");
-  span.innerText = codes[Math.floor(Math.random() * codes.length)];
-
-  span.style.left = Math.random() * 100 + "vw";
-  span.style.animationDuration = (6 + Math.random() * 5) + "s";
-
+setInterval(()=>{
+  let span=document.createElement("span");
+  span.innerText=code[Math.floor(Math.random()*code.length)];
+  span.style.left=Math.random()*100+"vw";
   bg.appendChild(span);
-
-  setTimeout(() => span.remove(), 11000);
-}
-
-setInterval(createCode, 250);
-
-
-// SCROLL ANIMATION
-const elements = document.querySelectorAll(".section");
-
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("show");
-    }
-  });
-});
-
-elements.forEach(el => {
-  el.classList.add("hidden");
-  observer.observe(el);
-});
+  setTimeout(()=>span.remove(),12000);
+},120);
